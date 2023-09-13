@@ -25,3 +25,17 @@ module "network_vpc_infrastructure" {
   project_tags = var.project_tags
   tag_prefix   = var.tag_prefix
 }
+
+
+/* ---------------------------------------------------------
+    MODULES: lambda
+    Calling all submodules within network module
+--------------------------------------------------------- */
+
+# Creating Lambda layers do Lambda functions
+module "lambda_layers" {
+  source = "./modules/lambda/layers"
+
+  layers_path           = "../app/lambda/layers"
+  s3_layers_bucket_name = local.s3_bucket_assets
+}

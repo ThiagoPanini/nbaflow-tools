@@ -7,12 +7,17 @@
 --------------------------------------------------------- */
 
 locals {
-  # Tags to be put in any Terraform resource
-  project_tags = {
-    "project" : "nbaflow-tools",
-    "mail" : "panini.development@gmail.com"
-  }
+  # Getting account_id and region_name information
+  account_id  = data.aws_caller_identity.current.account_id
+  region_name = data.aws_region.current.name
 
-  # A tag prefix to name resources
-  tag_prefix = "nbaflow"
+
+  /* ---------------------------------------------------------
+    LOCAL VALUES: S3 buckets
+    Retrieving S3 bucket names for further usage
+  --------------------------------------------------------- */
+
+  # A bucket name to store Lambda layers
+  s3_bucket_assets = "datadelivery-assets-${local.account_id}-${local.region_name}"
+
 }
