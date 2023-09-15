@@ -21,10 +21,42 @@ module "network_vpc_infrastructure" {
   vpc_enable_dns_support   = var.vpc_enable_dns_support
   vpc_enable_dns_hostnames = var.vpc_enable_dns_hostnames
 
-  # Assuming some default tags
+  # Passing some default tags
   project_tags = var.project_tags
   tag_prefix   = var.tag_prefix
 }
+
+
+/* ---------------------------------------------------------
+    MODULES: iam
+    Calling all submodules within iam module
+--------------------------------------------------------- */
+
+# Creating all IAM policies and roles used by resources in this project
+module "iam" {
+  source = "./modules/iam"
+
+  # Passing some default tags
+  project_tags = var.project_tags
+}
+
+
+/* ---------------------------------------------------------
+    MODULES: iam
+    Calling all submodules within iam module
+--------------------------------------------------------- */
+
+# Creating all IAM policies and roles used by resources in this project
+module "storage" {
+  source = "./modules/storage"
+
+  # Setting a list of buckets to be created
+  buckets_to_create = var.buckets_to_create
+
+  # Passing some default tags
+  project_tags = var.project_tags
+}
+
 
 
 /* ---------------------------------------------------------
@@ -36,6 +68,12 @@ module "network_vpc_infrastructure" {
 module "lambda_layers" {
   source = "./modules/lambda/layers"
 
+  # Defining configs to upload zip files to a bucket
   layers_path           = "../app/lambda/layers"
-  s3_layers_bucket_name = local.s3_bucket_assets
+  s3_layers_bucket_name = "lambda-layers-${data.aws_caller_identity.current.account_id}-${data.aws_region.current.name}"
+
+  # Setting explicit dependencies
+  depends_on = [
+    module.storage
+  ]
 }

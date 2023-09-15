@@ -30,7 +30,7 @@ variable "tag_prefix" {
 
 /* ---------------------------------------------------------
     VARIABLES: network
-    Parameters that configures submodules in network module
+    Defining all variables used in the network module
 --------------------------------------------------------- */
 
 variable "flag_create_network_resources" {
@@ -58,4 +58,15 @@ variable "vpc_enable_dns_hostnames" {
 }
 
 
+/* ---------------------------------------------------------
+    VARIABLES: storage
+    Defining all variables used in the storage module
+--------------------------------------------------------- */
 
+variable "buckets_to_create" {
+  description = "A list of bucket names that will be created within this module. The names put in the list will be concatened with the account id and the region name of the target AWS deployment account in order to make names unique"
+  type        = list(string)
+  default = [
+    "lambda-layers"
+  ]
+}
