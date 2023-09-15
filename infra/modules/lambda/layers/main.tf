@@ -27,7 +27,7 @@ resource "aws_lambda_layer_version" "nbaflow_layer" {
   layer_name = split(".", each.value)[0]
 
   compatible_architectures = ["x86_64"]
-  compatible_runtimes      = ["python3.10"]
+  compatible_runtimes      = ["python3.9"]
 
   depends_on = [
     aws_s3_object.lambda_layers

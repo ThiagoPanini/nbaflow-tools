@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------
-    FILE: variables.tf @ lambda-nba-players module
+    FILE: variables.tf @ lambda/layers module
 
     This file has all variables definitions for all
     submodules defined in this IaC project. For each one,
@@ -20,7 +20,7 @@ variable "s3_layers_bucket_name" {
 variable "s3_layers_bucket_prefix" {
   description = "A bucket prefix to store Lambda layers"
   type        = string
-  default     = "lambda/layers"
+  default     = "nbaflow"
 
   validation {
     condition     = substr(var.s3_layers_bucket_prefix, -1, -1) != "/"
